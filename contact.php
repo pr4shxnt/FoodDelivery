@@ -146,12 +146,22 @@
                         <?php } ?>
                       </div>
                       <?php
-                          $passSql = "SELECT * FROM users WHERE id='$userId'"; 
-                          $passResult = mysqli_query($conn, $passSql);
-                          $passRow=mysqli_fetch_assoc($passResult);
-                          $email = $passRow['email'];
-                          $phone = $passRow['phone'];
-                          
+if (isset($userId)) {
+  $passSql = "SELECT * FROM users WHERE id='$userId'";
+  $passResult = mysqli_query($conn, $passSql);
+  if ($passResult && mysqli_num_rows($passResult) > 0) {
+      $passRow = mysqli_fetch_assoc($passResult);
+      $email = isset($passRow['email']) ? $passRow['email'] : '';  // Check if 'email' is set
+      $phone = isset($passRow['phone']) ? $passRow['phone'] : '';  // Check if 'phone' is set
+  } else {
+      $email = '';
+      $phone = '';
+  }
+} else {
+  $email = '';
+  $phone = '';
+}
+
                       ?>
                       <form action="partials/_manageContactUs.php" method="POST">
                         <div class="row">
